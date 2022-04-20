@@ -1,0 +1,26 @@
+{% extends "AppLuckApp\padre.html" %}
+
+{% load static %}
+
+{% block contenidoQueCambia %}
+
+
+    <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
+  
+    {%if miFormulario.errors %}
+    <p style="color: red;">Los datos ingresados no son correctos</p>
+
+    {% endif %}
+
+    <form action="" method="POST">{% csrf_token %}
+        <table class="form-style">
+            {{miFormulario.as_table}}
+        </table>
+        <input type="submit", value="Enviar">
+    </form>    
+
+{% endblock %}
+    
+    
+
+
