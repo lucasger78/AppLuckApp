@@ -1,24 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
+{% extends "AppLuckApp/index.html" %}
+{% load static %}
 
-    
-    <form action="" method="POST">
+{% block contenidoQueCambia %}
+
+    <form action="" method="POST" style="color:white;">
 
         {%csrf_token%}
-    
-        {{form.as_p}}
-    
-        <button type="submit"> Iniciar Sesión</button>
 
+        <p style="font-family: Impact; font-size: 2.5em;">LOGIN LUCKAPP</p>
+
+        <div>
+            <p style="color: red;">{{mensaje}}</p>
+        </div>
+
+        {{loginForm.as_p}}
+
+        <div style="text-decoration: none;">
+            <button type="submit"> Iniciar sesión</button>
+            <button><a href="{% url 'Register' %}" style="text-decoration: none;">Registrarme</a></button>
+            <button><a href = "{% url 'Inicio' %}" style="text-decoration: none;">Volver al inicio</a></button>
+        </div>
     </form> 
-    <button><a href="{% url 'Register' %}">Registrate</a></button>
 
-</body>
-</html>
+{% endblock %}

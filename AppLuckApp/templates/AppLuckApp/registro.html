@@ -1,23 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-</head>
-<body>
+{% extends "AppLuckApp/index.html" %}
+{% load static %}
 
-    
-    <form action="" method="POST">
+{% block contenidoQueCambia %}
 
+    <form action="" method="POST" style="color:white;">
         {%csrf_token%}
-    
-        {{form.as_p}}
-    
-        <button type="submit"> Registrate</button>
+
+        <p style="color: white; font-family: Impact; font-size: 2.5em;">REGISTRO DE USUARIO</p>
+
+        <div>
+            <p style="color: red;">{{mensaje}}</p>
+        </div>
+
+        {{registerForm.as_p}}
+
+        <button type="submit"> Registrarme</button>
+        <button><a href = "{% url 'Login' %}" style="text-decoration: none;">Iniciar sesión</a></button>
+        <button><a href = "{% url 'Inicio' %}" style="text-decoration: none;">Volver al inicio</a></button>
 
     </form> 
 
-</body>
-</html>
+{% endblock %}

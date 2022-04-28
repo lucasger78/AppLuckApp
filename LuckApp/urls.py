@@ -21,6 +21,5 @@ import AppLuckApp
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-   
-    path('AppLuckApp/', include('AppLuckApp.urls')),
+    path('', include('AppLuckApp.urls')),
 ]
