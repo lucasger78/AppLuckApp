@@ -21,6 +21,10 @@ class Profesor(models.Model):
     email= models.EmailField()
     profesion = models.CharField(max_length=40)
     
+    # con esta indicación comenzamos a ver detalladamente en nuestra BD
+    def __str__(self):
+        return f"Nombre: {self.nombre} - Apellido: {self.apellido} - E-Mail: {self.email} - Profesión: {self.profesion}"
+    
 
 class Entregable(models.Model):
     

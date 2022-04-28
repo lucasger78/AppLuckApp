@@ -27,7 +27,13 @@
                  <a class="navbar-brand" href={% url 'Curso' %}>Curso</a>
                  <a class="navbar-brand" href={% url 'Estudiante' %}>Estudiante</a>
                  <a class="navbar-brand" href={% url 'Entregable' %}>Entregable</a>
-                 <a class="btn btn-primary" href="#NADAAUN">INICIAR</a>
+                 {% if not request.user.is_authenticated %}
+                 <a class="btn btn-primary" href={% url 'Login' %}>INICIAR</a>
+                 {% endif %}
+
+                 {% if request.user.is_authenticated %}
+                 <h2 class="text-muted small mb-4 mb-lg-0">Hola, {{user.username}}!</h2>
+                 {% endif %}
             </div>
         </nav>
         <!-- Masthead-->

@@ -6,11 +6,13 @@
 
 
     <!--Aquí va lo que cambia y lo asociado a esta vista-->
-    <h1>Este es el título del Inicio que cambio</h1>
+    <h1>{{ mensaje }}</h1>
+    
+    <button><a href="{% url 'logout' %}">Salir</a></button>
      
      <h3>Podes buscar una camada:</h3>
 
-     <form action="/AppCoder/buscar/" method="GET">
+     <form action="/AppLuckApp/buscar/" method="GET">
      
         <input type="number" name="camada" id="camada">
 
