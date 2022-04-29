@@ -15,10 +15,9 @@ urlpatterns = [
     path('editarPerfil', views.editarPerfil, name="EditarPerfil"),
 
     path('about', views.about, name='About'),
-    path('blogs',views.blogs,name="Blogs"),
+    
     path('postFormulario', views.postFormulario, name='postFormulario'), 
     path('leerPost',views.leerPost, name="LeerPost"),
     path('eliminarPost/<post_titulo>/',views.eliminarPost, name="EliminarPost"),
     path('editarPost/<post_titulo>/', views.editarPost, name="EditarPost"),
-   
 ]

@@ -22,6 +22,7 @@ class UserRegisterForm(UserCreationForm):
 
 
 
+
 class UserEditForm(UserCreationForm):
     
     email = forms.EmailField(label='Modificar e-mail')
@@ -34,9 +35,15 @@ class UserEditForm(UserCreationForm):
         #saca los mensajes de ayuda
         help_texts = {k:"" for k in fields}
 
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class PostFormulario(forms.Form):
     titulo = forms.CharField()
     subtitulo = forms.CharField()
-    autor= forms.CharField()
+    autor = forms.CharField()
     contenido = forms.CharField() 
-    fecha = forms.DateField()
+    fecha = forms.DateField(widget=DateInput)
+

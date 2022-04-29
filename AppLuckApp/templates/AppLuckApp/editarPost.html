@@ -4,17 +4,18 @@
 {% block contenidoQueCambia %}
 
     <form action="" method="POST" style="color:white;">
+        
         {% csrf_token %}
 
-        <h1>Editar Perfil</h1>
-        <h3>Usuario: {{usuario}}</h3>
+        <h1>Editar post</h1>
+        <h3>Publicación {{post.id}}: {{post.titulo}}</h3>
 
         <table>
-            {{miFormularioEditPerfil.as_table}}
+            {{miFormularioEditPost.as_table}}
         </table>
 
         <input type="submit", value="Confirmar cambios">
-
+        <a style="color:white; " href={% url 'LeerPost' %}>Regresar a los blogs</a>
     </form>
     
 {% endblock %}

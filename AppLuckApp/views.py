@@ -24,8 +24,7 @@ def inicio(request):
 def about(request):
     return render(request, "AppLuckApp/about.html")
 
-def blogs(request):
-    return render(request,"AppLuckApp/blogs.html")
+
 
 #------1 - CREATE -------
 def postFormulario(request):
@@ -45,6 +44,8 @@ def postFormulario(request):
                                                                                                                             
     return render (request, "AppLuckApp/postFormulario.html", {"miFormularioBlog":miFormulario})
 
+
+
 #------2 - READ -------
 def leerPost(request):
     
@@ -54,6 +55,7 @@ def leerPost(request):
     
     return render(request, "AppLuckApp/leerpost.html", contexto)
 
+
 #------3 - UPLOAD -------   
 
 def editarPost(request, post_titulo):
@@ -61,7 +63,8 @@ def editarPost(request, post_titulo):
     post = Post.objects.get(titulo=post_titulo)
     
     
-    if request.method == "GET":
+    if request.method == "POST":
+
         miFormulario = PostFormulario(request.POST)                                                                     
 
         print(miFormulario)
@@ -70,23 +73,23 @@ def editarPost(request, post_titulo):
             
             informacion = miFormulario.cleaned_data
             
-            post.titulo = informacion['titulo'], 
-            post.subtitulo= informacion['subtitulo'], 
-            post.autor=informacion['autor'], 
-            post.contenido=informacion['contenido'] 
-            post.fecha=informacion['fecha']
+            post.titulo = informacion['titulo']
+            post.subtitulo = informacion['subtitulo']
+            post.autor = informacion['autor']
+            post.contenido = informacion['contenido']
+            post.fecha = informacion['fecha']
             
             
             post.save()
             
-                
-                                                                               
+                                                                           
             return render(request, "AppLuckApp/index.html")                                                                      
     else:  
         
-        miFormulario=PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
+        miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
         
-    return render(request, "AppLuckApp/editarPost.html", {"miFormulario":miFormulario, "post_titulo":post_titulo})
+    return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post})
+
 
 
 #------4 - DELETE -------  
@@ -101,6 +104,10 @@ def eliminarPost(request, post_titulo):
     contexto= {"post":post} 
     
     return render(request, "AppLuckApp/leerPost.html", contexto)
+
+
+
+
 
 #-------------REGISTRAR------------
 
@@ -158,25 +165,33 @@ def login_request(request):
 
 
 
+#-------------EDITAR USUARIO-------------
+
 @login_required
 def editarPerfil(request):
     
     usuario = request.user
-    
+
     if request.method == 'POST':
-        miFormulario == UserEditForm(request.POST)
-        if miFormulario.is_valid:
-            informacion = miFormulario.cleaned_data
+
+        myForm = UserEditForm(request.POST)
+
+        if myForm.is_valid:
+
+            informacion =  myForm.cleaned_data['username']
             
             usuario.email = informacion['email']
             usuario.password1 = informacion['password1']
             usuario.password2 = informacion['password2']
+
             usuario.save()
             
-            return render(request, "AppLuckApp/inicio.htm")
-        
+            return render(request, "AppLuckApp/index.html")  
     else:
         
-        miFormulario = UserEditForm(initial={'email':usuario.email})
+         myForm = UserEditForm(initial={'email':usuario.email,'last_name':usuario.last_name,'first_name':usuario.first_name})
     
-    return render(request, "AppLuckApp/editarPerfil.html", {"miFormulario":miFormulario, "usuario":usuario})
+    return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario})
+
+
+

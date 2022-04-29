@@ -1,29 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veo los Post</title>
-</head>
-<body>
+{% extends "AppLuckApp/index.html" %}
+{% load static %}
 
+{% block contenidoQueCambia %}
+    
+    {% if request.user.is_authenticated %}
+        <a href={% url 'postFormulario' %}><button class=" col-auto btn btn-primary btn-lg">Agregar nuevo post</button></a>
+    {% else %}
+        <a href={% url 'Login' %} class=" col-auto btn btn-primary btn-lg" style="color: white;">Inicia sesión para crear blogs</a>
+    {% endif %}
+    <br><br><br><br>
 
     {% for p in post %}
 
-        <li>{{p}}</li>  
-        <button>
-            <a href="{% url 'EliminarPost' p.nombre %}"> Eliminar</a>
-            <a href="{% url 'EditarPost' p.nombre %}"> Editar</a>
-        </button>
+        <div style="color: white; list-style:none;">
+
+            <p>Publicación {{p.id}}</p>
+            <p style="font-family: Impact; font-size: 2.5em;">{{p.titulo}}</p>
+            <p>{{p.subtitulo}}</p>
+            <p>Por: {{p.autor}}</p>
+            <p>Fecha de publicación: {{p.fecha}}</p>
+            <p>Contenido:</p>
+            <p>{{p.contenido}}</p>
+
+            {% if request.user.is_authenticated %}
+                <a class=" col-auto btn btn-primary" href="{% url 'EliminarPost' p.titulo %}"> Eliminar</a>
+                <a class=" col-auto btn btn-primary" href="{% url 'EditarPost' p.titulo %}"> Editar</a>
+            {% else %}
+                <a href={% url 'Login' %} class=" col-auto btn btn-primary" style="color: white;">Inicia sesión para editar / borrar blogs</a>
+            {% endif %}
+
+        </div>
 
 
 
+        <br><br><br><br>
     {% endfor %}
 
-    <br>
-    <a href="postFormulario">Agregar Post</a>
-
     
-</body>
-</html>
+{% endblock %}
