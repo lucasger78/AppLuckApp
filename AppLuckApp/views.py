@@ -3,7 +3,7 @@ import email
 from pyexpat import model
 from django.shortcuts import render
 from django.http import HttpResponse
-from AppLuckApp.forms import UserEditForm, UserRegisterForm
+from AppLuckApp.forms import PostFormulario, UserEditForm, UserRegisterForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -16,6 +16,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
+from AppLuckApp.models import Post
+
 def inicio(request):
     return render(request, "AppLuckApp/index.html")
 
@@ -25,8 +27,80 @@ def about(request):
 def blogs(request):
     return render(request,"AppLuckApp/blogs.html")
 
+#------1 - CREATE -------
+def postFormulario(request):
+    
+    if request.method == "POST":
+        miFormulario = PostFormulario(request.POST)                                                                     
+
+        print(miFormulario)
+        
+        if miFormulario.is_valid:
+            informacion = miFormulario.cleaned_data
+            post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=informacion['autor'], contenido=informacion['contenido'], fecha=informacion['fecha']) 
+            post.save()                                                                                
+            return render(request, "AppLuckApp/index.html")                                                                     
+    else:
+        miFormulario = PostFormulario()     
+                                                                                                                            
+    return render (request, "AppLuckApp/postFormulario.html", {"miFormularioBlog":miFormulario})
+
+#------2 - READ -------
+def leerPost(request):
+    
+    post = Post.objects.all()
+    
+    contexto= {"post":post} 
+    
+    return render(request, "AppLuckApp/leerpost.html", contexto)
+
+#------3 - UPLOAD -------   
+
+def editarPost(request, post_titulo):
+    
+    post = Post.objects.get(titulo=post_titulo)
+    
+    
+    if request.method == "GET":
+        miFormulario = PostFormulario(request.POST)                                                                     
+
+        print(miFormulario)
+        
+        if miFormulario.is_valid:
+            
+            informacion = miFormulario.cleaned_data
+            
+            post.titulo = informacion['titulo'], 
+            post.subtitulo= informacion['subtitulo'], 
+            post.autor=informacion['autor'], 
+            post.contenido=informacion['contenido'] 
+            post.fecha=informacion['fecha']
+            
+            
+            post.save()
+            
+                
+                                                                               
+            return render(request, "AppLuckApp/index.html")                                                                      
+    else:  
+        
+        miFormulario=PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
+        
+    return render(request, "AppLuckApp/editarPost.html", {"miFormulario":miFormulario, "post_titulo":post_titulo})
 
 
+#------4 - DELETE -------  
+def eliminarPost(request, post_titulo):
+    
+    post = Post.objects.get(titulo=post_titulo)
+    post.delete()
+    
+    #vuelvo al menú
+    post = Post.objects.all()
+    
+    contexto= {"post":post} 
+    
+    return render(request, "AppLuckApp/leerPost.html", contexto)
 
 #-------------REGISTRAR------------
 

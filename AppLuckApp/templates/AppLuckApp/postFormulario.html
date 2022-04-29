@@ -1,4 +1,5 @@
-{% extends "AppLuckApp/index.html" %}
+{% extends "AppLuckApp\index.html" %}
+
 {% load static %}
 
 {% block contenidoQueCambia %}
@@ -6,16 +7,21 @@
 
     <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
   
-    {%if miFormulario.errors %}
+    {% if miFormularioBlog.errors %}
     <p style="color: red;">Los datos ingresados no son correctos</p>
 
     {% endif %}
 
     <form action="" method="POST">{% csrf_token %}
         <table class="form-style">
-            {{miFormulario.as_table}}
+            {{miFormularioBlog.as_p}}
         </table>
         <input type="submit", value="Enviar">
     </form>    
 
 {% endblock %}
+    
+
+    
+
+

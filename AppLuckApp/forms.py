@@ -34,3 +34,9 @@ class UserEditForm(UserCreationForm):
         #saca los mensajes de ayuda
         help_texts = {k:"" for k in fields}
 
+class PostFormulario(forms.Form):
+    titulo = forms.CharField()
+    subtitulo = forms.CharField()
+    autor= forms.CharField()
+    contenido = forms.CharField() 
+    fecha = forms.DateField()
