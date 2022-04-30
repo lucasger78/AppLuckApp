@@ -24,15 +24,14 @@ def avatar(request):
 
 def inicio(request):
     avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, "AppLuckApp/index.html", {"url":avatares[0].imagen.url})
+    return render(request, "AppLuckApp/index.html")
 
 
 
 def about(request):
     avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, "AppLuckApp/about.html", {"url":avatares[0].imagen.url})
+    return render(request, "AppLuckApp/about.html")
     
-
 
 #------1 - CREATE -------
 def postFormulario(request):
@@ -43,14 +42,22 @@ def postFormulario(request):
         print(miFormulario)
         
         if miFormulario.is_valid:
+         
             informacion = miFormulario.cleaned_data
-            post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=informacion['autor'], contenido=informacion['contenido'], fecha=informacion['fecha']) 
-            post.save()                                                                                
-            return render(request, "AppLuckApp/index.html")                                                                     
+
+            tituloNuevo = informacion['titulo']
+            tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
+
+            if tituloChecker.exists():
+                return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Ya hay un post con el mismo título !","miFormularioBlog":miFormulario})
+            else:
+                post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=informacion['autor'], contenido=informacion['contenido'], fecha=informacion['fecha']) 
+                post.save()                                                                                
+                return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Post creado!","miFormularioBlog":miFormulario})                                                                
     else:
         miFormulario = PostFormulario()     
                                                                                                                             
-    return render (request, "AppLuckApp/postFormulario.html", {"miFormularioBlog":miFormulario, "url":avatares[0].imagen.url})
+    return render (request, "AppLuckApp/postFormulario.html", {"miFormularioBlog":miFormulario})
 
 
 
@@ -59,7 +66,7 @@ def leerPost(request):
     avatares = Avatar.objects.filter(user=request.user.id)
     post = Post.objects.all()
     
-    contexto= {"post":post, "url":avatares[0].imagen.url} 
+    contexto= {"post":post} 
     
     return render(request, "AppLuckApp/leerpost.html", contexto)
 
@@ -80,23 +87,26 @@ def editarPost(request, post_titulo):
         if miFormulario.is_valid:
             
             informacion = miFormulario.cleaned_data
-            
-            post.titulo = informacion['titulo']
-            post.subtitulo = informacion['subtitulo']
-            post.autor = informacion['autor']
-            post.contenido = informacion['contenido']
-            post.fecha = informacion['fecha']
-            
-            
-            post.save()
-            
-                                                                           
-            return render(request, "AppLuckApp/index.html")                                                                      
+
+            tituloNuevo = informacion['titulo']
+            tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
+
+            if tituloChecker.exists():
+                return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Ya hay un post con el mismo título ! Si no quieres editar, vuelve a la página de blogs","miFormularioEditPost":miFormulario})
+            else:
+                post.titulo = informacion['titulo']
+                post.subtitulo = informacion['subtitulo']
+                post.autor = informacion['autor']
+                post.contenido = informacion['contenido']
+                post.fecha = informacion['fecha']
+        
+                post.save()                                                                               
+                return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Post modificado!","miFormularioEditPost":miFormulario})                                                                     
     else:  
         
         miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
         
-    return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post, "url":avatares[0].imagen.url})
+    return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post})
 
 
 
@@ -199,7 +209,7 @@ def editarPerfil(request):
         
          myForm = UserEditForm(initial={'email':usuario.email,'last_name':usuario.last_name,'first_name':usuario.first_name})
     
-    return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario, "url":avatares[0].imagen.url})
+    return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario})
 
 
 def buscar(request):
@@ -208,7 +218,7 @@ def buscar(request):
 def busqueda(request):
     if request.method == 'POST':
         query = request.POST['query']
-        listapost = Post.objects.filter(subtitulo__contains = query)
+        listapost = Post.objects.filter(titulo__contains = query)
 
         return render(request, 'AppLuckApp/resultadoBusqueda.html',{'query':query,'leerPost':listapost})
     else:

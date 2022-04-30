@@ -1,17 +1,34 @@
 {% extends "AppLuckApp/index.html" %}
 {% load static %}
 
-{% block contenidoQueCambia2 %}
+{% block contenidoQueCambia %}
 
-    <p>Estamos buscando a: {{query}}</p>
+    <p style="color: red;">Estamos buscando a: {{query}}</p>
+    <button class=" col-auto btn btn-primary btn-sg"><a href = "{% url 'LeerPost' %}" style="color:white; text-decoration: none;">Volver a blogs</a></button>
+    <br><br>
     {% if leerPost %}
 
     {% for post in leerPost %}
-            
-           subtitulo: {{ post.subtitulo }} 
-           {{ post.titulo }}
-           {{ post.autor }}
-        
+       
+        <div style="color: white; list-style:none;">
+
+            <p>Publicación {{post.id}}</p>
+            <p style="font-family: Impact; font-size: 2.5em;">{{post.titulo}}</p>
+            <p>{{post.subtitulo}}</p>
+            <p>Por: {{post.autor}}</p>
+            <p>Fecha de publicación: {{post.fecha}}</p>
+            <p>Contenido:</p>
+            <p>{{post.contenido}}</p>
+
+            {% if request.user.is_authenticated %}
+                <a class=" col-auto btn btn-primary" href="{% url 'EliminarPost' post.titulo %}"> Eliminar</a>
+                <a class=" col-auto btn btn-primary" href="{% url 'EditarPost' post.titulo %}"> Editar</a>
+            {% else %}
+                <a href={% url 'Login' %} class=" col-auto btn btn-primary" style="color: white;">Inicia sesión para editar / borrar blogs</a>
+            {% endif %}
+
+        </div>
+        <br><br><br><br>
     {% endfor %}   
         
 
@@ -19,7 +36,6 @@
 
         <p style="color: red;">No se encontraron resultados :(</p>
      
-
     {% endif %}
 
 

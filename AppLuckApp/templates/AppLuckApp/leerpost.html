@@ -3,12 +3,28 @@
 
 {% block contenidoQueCambia %}
     
+    <div class="row">
+        <div class="col-xl-3">
+            <h4 style="font-family: Impact; color: white">BUSCA UN TÍTULO</h4>
+
+            <form action="resultadoBusqueda" method="POST">{% csrf_token %}
+
+                <input type="text" name="query" required>
+
+                <input class=" col-auto btn btn-primary btn-sg" type="submit" value="Buscar">
+
+            </form>
+        </div>
+    </div>
+
+    <br><br>
     {% if request.user.is_authenticated %}
         <a href={% url 'postFormulario' %}><button class=" col-auto btn btn-primary btn-lg">Agregar nuevo post</button></a>
     {% else %}
         <a href={% url 'Login' %} class=" col-auto btn btn-primary btn-lg" style="color: white;">Inicia sesión para crear blogs</a>
     {% endif %}
-    <br><br><br><br>
+    <br><br>
+
 
     {% for p in post %}
 
