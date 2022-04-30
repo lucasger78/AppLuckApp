@@ -1,0 +1,26 @@
+{% extends "AppLuckApp/index.html" %}
+{% load static %}
+
+{% block contenidoQueCambia2 %}
+
+    <p>Estamos buscando a: {{query}}</p>
+    {% if leerPost %}
+
+    {% for post in leerPost %}
+            
+           subtitulo: {{ post.subtitulo }} 
+           {{ post.titulo }}
+           {{ post.autor }}
+        
+    {% endfor %}   
+        
+
+    {% else %}
+
+        <p style="color: red;">No se encontraron resultados :(</p>
+     
+
+    {% endif %}
+
+
+{% endblock %}

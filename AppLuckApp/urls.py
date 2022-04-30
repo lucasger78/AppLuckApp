@@ -20,4 +20,7 @@ urlpatterns = [
     path('leerPost',views.leerPost, name="LeerPost"),
     path('eliminarPost/<post_titulo>/',views.eliminarPost, name="EliminarPost"),
     path('editarPost/<post_titulo>/', views.editarPost, name="EditarPost"),
+    
+    path('buscar',views.buscar,name="buscar"),
+    path('resultadoBusqueda',views.busqueda,name="busqueda"),
 ]

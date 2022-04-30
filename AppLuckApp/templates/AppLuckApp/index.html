@@ -67,11 +67,36 @@
                         </div>
                     </div>
                 </div>
+                <br>
+                <br>
+                <div class="row justify-content-center">
+                    <div class="col-xl-3">
+                           <h4 style="font-family: Impact; color: white">BUSCA UN TEMA</h4>
+                <!--
+                <a class="btn btn-xl btn-outline-light" style="color:#1abc9c; border-color:#1abc9c;" href = "{% url 'buscar' %}">Jugadores</a>
+                -->
+                        <form action="resultadoBusqueda" method="POST">{% csrf_token %}
+        
+                            <input type="text" name="query" required>
+            
+                            <input class=" col-auto btn btn-primary btn-sg" type="submit" value="Buscar">
+            
+                        </form>
+                    </div>
+                </div>
                 {% endblock %}
 
             </div>
         </header>
+    </div>
+    <!--FORMULARIO PARA BUSCAR-->
+        <!-- Seccion de herencia-->
+        {% block contenidoQueCambia2 %}
         
+        {% endblock %}
+
+</div>
+</div>
   
 
         <!-- Footer-->

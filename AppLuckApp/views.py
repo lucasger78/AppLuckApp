@@ -202,4 +202,17 @@ def editarPerfil(request):
     return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario, "url":avatares[0].imagen.url})
 
 
+def buscar(request):
+    return render (request,'AppLuckApp/buscarPost.html')
+
+def busqueda(request):
+    if request.method == 'POST':
+        query = request.POST['query']
+        listapost = Post.objects.filter(subtitulo__contains = query)
+
+        return render(request, 'AppLuckApp/resultadoBusqueda.html',{'query':query,'leerPost':listapost})
+    else:
+        return render(request, 'AppLuckApp/resultadoBusqueda.html')
+
+
 
