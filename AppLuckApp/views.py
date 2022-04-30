@@ -16,19 +16,27 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
-from AppLuckApp.models import Post
+from AppLuckApp.models import Avatar, Post
+
+def avatar(request):
+    avatares = Avatar.objects.filter(user=request.user.id)
+    return render(request, {"url":avatares[0].imagen.url})
 
 def inicio(request):
-    return render(request, "AppLuckApp/index.html")
+    avatares = Avatar.objects.filter(user=request.user.id)
+    return render(request, "AppLuckApp/index.html", {"url":avatares[0].imagen.url})
+
+
 
 def about(request):
-    return render(request, "AppLuckApp/about.html")
-
+    avatares = Avatar.objects.filter(user=request.user.id)
+    return render(request, "AppLuckApp/about.html", {"url":avatares[0].imagen.url})
+    
 
 
 #------1 - CREATE -------
 def postFormulario(request):
-    
+    avatares = Avatar.objects.filter(user=request.user.id)
     if request.method == "POST":
         miFormulario = PostFormulario(request.POST)                                                                     
 
@@ -42,16 +50,16 @@ def postFormulario(request):
     else:
         miFormulario = PostFormulario()     
                                                                                                                             
-    return render (request, "AppLuckApp/postFormulario.html", {"miFormularioBlog":miFormulario})
+    return render (request, "AppLuckApp/postFormulario.html", {"miFormularioBlog":miFormulario, "url":avatares[0].imagen.url})
 
 
 
 #------2 - READ -------
 def leerPost(request):
-    
+    avatares = Avatar.objects.filter(user=request.user.id)
     post = Post.objects.all()
     
-    contexto= {"post":post} 
+    contexto= {"post":post, "url":avatares[0].imagen.url} 
     
     return render(request, "AppLuckApp/leerpost.html", contexto)
 
@@ -59,7 +67,7 @@ def leerPost(request):
 #------3 - UPLOAD -------   
 
 def editarPost(request, post_titulo):
-    
+    avatares = Avatar.objects.filter(user=request.user.id)
     post = Post.objects.get(titulo=post_titulo)
     
     
@@ -88,7 +96,7 @@ def editarPost(request, post_titulo):
         
         miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
         
-    return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post})
+    return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post, "url":avatares[0].imagen.url})
 
 
 
@@ -169,7 +177,7 @@ def login_request(request):
 
 @login_required
 def editarPerfil(request):
-    
+    avatares = Avatar.objects.filter(user=request.user.id)    
     usuario = request.user
 
     if request.method == 'POST':
@@ -191,7 +199,7 @@ def editarPerfil(request):
         
          myForm = UserEditForm(initial={'email':usuario.email,'last_name':usuario.last_name,'first_name':usuario.first_name})
     
-    return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario})
+    return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario, "url":avatares[0].imagen.url})
 
 
 
