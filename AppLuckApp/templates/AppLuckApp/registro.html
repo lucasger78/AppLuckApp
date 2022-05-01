@@ -14,10 +14,10 @@
 
         {{registerForm.as_p}}
 
-        <button type="submit"> Registrarme</button>
-        <button><a href = "{% url 'Login' %}" style="text-decoration: none;">Iniciar sesión</a></button>
-        <button><a href = "{% url 'Inicio' %}" style="text-decoration: none;">Volver al inicio</a></button>
-
+        <button class="col-auto btn btn-primary btn-sg" type="submit"> Registrarme</button>
+        <button class="col-auto btn btn-primary btn-sg" ><a href="{% url 'Register' %}" style="color:white; text-decoration: none;">Registrarme</a></button>
+        <button class=" col-auto btn btn-primary btn-sg"><a href = "{% url 'Inicio' %}" style="color:white; text-decoration: none;">Volver al inicio</a></button>
+        
     </form> 
 
 {% endblock %}

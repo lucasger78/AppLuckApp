@@ -6,7 +6,7 @@ class Post(models.Model):
     titulo = models.CharField(max_length=100)
     subtitulo = models.CharField(max_length=100)
     autor = models.CharField(max_length=100)
-    contenido = models.CharField(max_length=1000)
+    contenido = models.CharField(max_length=3000)
     fecha = models.DateField(auto_now=True)
 
     def __str__(self):

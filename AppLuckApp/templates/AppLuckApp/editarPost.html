@@ -2,20 +2,22 @@
 {% load static %}
 
 {% block contenidoQueCambia %}
+    <h1 style="color:white;">Editar post</h1>
+    <p style="color: red;">{{ mensaje }}</p>
+    <p style="color: white;">El título no puede coincidir con otro</p>
 
     <form action="" method="POST" style="color:white;">
         
         {% csrf_token %}
 
-        <h1>Editar post</h1>
         <h3>Publicación {{post.id}}: {{post.titulo}}</h3>
 
         <table>
             {{miFormularioEditPost.as_table}}
         </table>
 
-        <input type="submit", value="Confirmar cambios">
-        <a style="color:white; " href={% url 'LeerPost' %}>Regresar a los blogs</a>
+        <input class=" col-auto btn btn-primary btn-sg" type="submit", value="Confirmar cambios">
+        <a class=" col-auto btn btn-primary btn-sg" style="color:white; " href={% url 'LeerPost' %}>Regresar a los blogs</a>
     </form>
     
 {% endblock %}
