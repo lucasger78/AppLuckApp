@@ -89,7 +89,7 @@ def editarPost(request, post_titulo):
             informacion = miFormulario.cleaned_data
 
             tituloNuevo = informacion['titulo']
-<<<<<<< HEAD
+            #Para que se pueda editar el post sin tener que editar el título
             #tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
 
             #if tituloChecker.exists():
@@ -103,21 +103,6 @@ def editarPost(request, post_titulo):
         
             post.save()                                                                               
             return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Post modificado!","miFormularioEditPost":miFormulario})                                                                     
-=======
-            tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
-
-            if tituloChecker.exists():
-                return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Ya hay un post con el mismo título ! Si no quieres editar, vuelve a la página de blogs","miFormularioEditPost":miFormulario})
-            else:
-                post.titulo = informacion['titulo']
-                post.subtitulo = informacion['subtitulo']
-                post.autor = informacion['autor']
-                post.contenido = informacion['contenido']
-                post.fecha = informacion['fecha']
-        
-                post.save()                                                                               
-                return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Post modificado!","miFormularioEditPost":miFormulario})                                                                     
->>>>>>> 3a3dd4eab5542b67869144a3ee6a0e35cb66b660
     else:  
         
         miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
