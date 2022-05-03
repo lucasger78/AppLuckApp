@@ -3,7 +3,7 @@
 
 {% block contenidoQueCambia %}
 
-    <form action="" method="POST" style="color:white;">
+    <form action="" method="POST" style="color:white;" enctype="multipart/form-data">
         {%csrf_token%}
 
         <p style="color: white; font-family: Impact; font-size: 2.5em;">REGISTRO DE USUARIO</p>
@@ -15,7 +15,6 @@
         {{registerForm.as_p}}
 
         <button class="col-auto btn btn-primary btn-sg" type="submit"> Registrarme</button>
-        <button class="col-auto btn btn-primary btn-sg" ><a href="{% url 'Register' %}" style="color:white; text-decoration: none;">Registrarme</a></button>
         <button class=" col-auto btn btn-primary btn-sg"><a href = "{% url 'Inicio' %}" style="color:white; text-decoration: none;">Volver al inicio</a></button>
         
     </form> 

@@ -28,28 +28,34 @@
 
     {% for p in post %}
 
-        <div style="color: white; list-style:none;">
-
-            <p>Publicación {{p.id}}</p>
-            <p style="font-family: Impact; font-size: 2.5em;">{{p.titulo}}</p>
-            <h3>{{p.subtitulo}}</h3>
-            <p>Por: {{p.autor}}</p>
-            <p>Fecha de publicación: {{p.fecha}}</p>
-            <p>Contenido:</p>
-            <p>{{p.contenido}}</p>
+        <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-2">
+                {% if p.imagen %}
+                    <img src="{{p.imagen.url}}" class="img-fluid rounded-start" alt="...">
+                {% endif %}
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{p.titulo}}</h5>
+                  <p>{{p.subtitulo}}</p>
+                  <p class="card-text"><small class="text-muted">Por: {{p.autor}}      {{p.fecha}}</small></p>
+                  <p class="card-text">{{p.contenido}}</p>
+                </div>
+              </div>
+            </div>
 
             {% if request.user.is_authenticated %}
-                <a class=" col-auto btn btn-primary" href="{% url 'EliminarPost' p.titulo %}"> Eliminar</a>
-                <a class=" col-auto btn btn-primary" href="{% url 'EditarPost' p.titulo %}"> Editar</a>
+            <a class=" col-auto btn btn-primary" href="{% url 'EliminarPost' p.titulo %}"> Eliminar</a>
+            <a class=" col-auto btn btn-primary" href="{% url 'EditarPost' p.titulo %}"> Editar</a>
             {% else %}
                 <a href={% url 'Login' %} class=" col-auto btn btn-primary" style="color: white;">Inicia sesión para editar / borrar blogs</a>
             {% endif %}
-
         </div>
 
 
 
-        <br><br><br><br>
+        
     {% endfor %}
 
     

@@ -3,6 +3,7 @@ import email
 from pyexpat import model
 from django.shortcuts import render
 from django.http import HttpResponse
+from .forms import *
 from AppLuckApp.forms import PostFormulario, UserEditForm, UserRegisterForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -16,7 +17,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
-from AppLuckApp.models import Avatar, Post
+from .models import *
 
 def avatar(request):
     avatares = Avatar.objects.filter(user=request.user.id)
@@ -35,9 +36,8 @@ def about(request):
 
 #------1 - CREATE -------
 def postFormulario(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
     if request.method == "POST":
-        miFormulario = PostFormulario(request.POST)                                                                     
+        miFormulario = PostFormulario(request.POST, request.FILES)                                                                     
 
         print(miFormulario)
         
@@ -51,7 +51,7 @@ def postFormulario(request):
             if tituloChecker.exists():
                 return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Ya hay un post con el mismo título !","miFormularioBlog":miFormulario})
             else:
-                post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=informacion['autor'], contenido=informacion['contenido'], fecha=informacion['fecha']) 
+                post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=request.user.username, contenido=informacion['contenido'], fecha=informacion['fecha'], imagen=informacion['imagen']) 
                 post.save()                                                                                
                 return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Post creado!","miFormularioBlog":miFormulario})                                                                
     else:
@@ -63,7 +63,6 @@ def postFormulario(request):
 
 #------2 - READ -------
 def leerPost(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
     post = Post.objects.all()
     
     contexto= {"post":post} 
@@ -74,13 +73,11 @@ def leerPost(request):
 #------3 - UPLOAD -------   
 
 def editarPost(request, post_titulo):
-    avatares = Avatar.objects.filter(user=request.user.id)
     post = Post.objects.get(titulo=post_titulo)
-    
     
     if request.method == "POST":
 
-        miFormulario = PostFormulario(request.POST)                                                                     
+        miFormulario = PostFormulario(request.POST, request.FILES)                                                                     
 
         print(miFormulario)
         
@@ -88,24 +85,25 @@ def editarPost(request, post_titulo):
             
             informacion = miFormulario.cleaned_data
 
-            tituloNuevo = informacion['titulo']
+            #tituloNuevo = informacion['titulo']
             #Para que se pueda editar el post sin tener que editar el título
             #tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
 
             #if tituloChecker.exists():
                 #return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Ya hay un post con el mismo título ! Si no quieres editar, vuelve a la página de blogs","miFormularioEditPost":miFormulario})
             #else:
+
             post.titulo = informacion['titulo']
             post.subtitulo = informacion['subtitulo']
-            post.autor = informacion['autor']
             post.contenido = informacion['contenido']
             post.fecha = informacion['fecha']
-        
+            post.imagen = informacion['imagen']
+
             post.save()                                                                               
             return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Post modificado!","miFormularioEditPost":miFormulario})                                                                     
     else:  
         
-        miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'autor':post.autor, 'contenido':post.contenido, 'fecha':post.fecha})
+        miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'contenido':post.contenido, 'fecha':post.fecha})
         
     return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post})
 
@@ -128,6 +126,7 @@ def eliminarPost(request, post_titulo):
 
 
 
+
 #-------------REGISTRAR------------
 
 def register(request):
@@ -135,7 +134,7 @@ def register(request):
     if request.method == 'POST':
         
         #form = UserCreationForm(request.POST)
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         
         if form.is_valid():
             
@@ -147,6 +146,33 @@ def register(request):
         form = UserRegisterForm()
         
     return render(request, "AppLuckApp/registro.html", {"registerForm":form})
+
+
+# @login_required
+# def addAvatar(request):
+
+#     usuario = request.user
+
+#     if request.method == 'POST':
+#         myForm = addAvatarForm(request.POST,request.FILES)
+
+#         if myForm.is_valid():
+
+#             informacion = myForm.cleaned_data
+
+#             checIfUserHasAvatar = Avatar.objects.filter(user__contains = request.user)
+            
+#             if checIfUserHasAvatar is None:
+
+#                 nuevoAvatar = Avatar(user=request.user,avatar=informacion['imagen'])
+#                 nuevoAvatar.save()
+#             else:
+                
+    
+#     myForm = addAvatarForm(request.POST,request.FILES)
+
+#     return render (request, {"addAvatarForm":myForm})
+
 
 
 
@@ -187,13 +213,12 @@ def login_request(request):
 #-------------EDITAR USUARIO-------------
 
 @login_required
-def editarPerfil(request):
-    avatares = Avatar.objects.filter(user=request.user.id)    
+def editarPerfil(request): 
     usuario = request.user
 
     if request.method == 'POST':
 
-        myForm = UserEditForm(request.POST)
+        myForm = UserEditForm(request.POST, request.FILES)
 
         if myForm.is_valid():
 

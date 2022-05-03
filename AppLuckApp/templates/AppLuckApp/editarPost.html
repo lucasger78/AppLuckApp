@@ -6,11 +6,11 @@
     <p style="color: red;">{{ mensaje }}</p>
     <p style="color: white;">El título no puede coincidir con otro</p>
 
-    <form action="" method="POST" style="color:white;">
+    <form action="" method="POST" style="color:white;" enctype="multipart/form-data">
         
         {% csrf_token %}
 
-        <h3>Publicación {{post.id}}: {{post.titulo}}</h3>
+        <h3>Editando publicación: {{post.id}}: {{post.titulo}}</h3>
 
         <table>
             {{miFormularioEditPost.as_table}}

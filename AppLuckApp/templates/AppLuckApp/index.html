@@ -36,7 +36,10 @@
                  {% if request.user.is_authenticated %}
                  <a class="navbar-brand" href={% url 'EditarPerfil' %}>Editar Perfil</a>
                  <a class="navbar-brand" href={% url 'postFormulario' %}>Crear blog</a>
-                 <a class="navbar-brand">Bienvenido {{user.username}}!<img height="40px" src="{{url}}"></a>
+                 <a class="navbar-brand">Bienvenido {{user.username}}!
+                     <img height="40px" src="{{request.user.imagen.url}}">
+                </a>
+
                  <a class="btn btn-primary" href={% url 'logout' %}>Cerrar sesión</a>                              
                  {% endif %}
             </div>

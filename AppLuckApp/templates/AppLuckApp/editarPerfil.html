@@ -3,7 +3,7 @@
 
 {% block contenidoQueCambia %}
 
-    <form action="" method="POST" style="color:white;">
+    <form action="" method="POST" style="color:white;" enctype="multipart/form-data">
         {% csrf_token %}
 
         <h1>Editar Perfil</h1>
@@ -11,6 +11,7 @@
 
         <table>
             {{miFormularioEditPerfil.as_table}}
+
         </table>
 
         <input type="submit", value="Confirmar cambios">
