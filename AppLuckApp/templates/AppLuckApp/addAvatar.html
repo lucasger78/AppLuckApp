@@ -8,12 +8,12 @@
 
         <h1>Editar Perfil</h1>
         <h3>Usuario: {{usuario}}</h3>
-
+        <p style="color: red;">{{ mensaje }}</p>
         <table>
-            {{ miFormularioEditPerfil.as_table }}
+            {{ addAvatarForm.as_table }}
         </table>
 
-        <input type="submit", value="Confirmar cambios">
+        <input class=" col-auto btn btn-primary btn-sg" type="submit", value="Confirmar cambios">
 
     </form>
     

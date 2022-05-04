@@ -23,13 +23,11 @@ class UserRegisterForm(UserCreationForm):
         help_texts = {k:"" for k in fields}
 
 
-# class addAvatarForm(forms.Form):
-
-#     imagen = forms.ImageField()
-
-#     class Meta:
-#         model = Avatar
-#         fields = ['imagen']
+class addAvatarForm(forms.ModelForm):
+    imagen = forms.ImageField()
+    class Meta:
+        model = Avatar
+        fields = ['imagen']
 
 
 

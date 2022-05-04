@@ -25,7 +25,7 @@ def avatar(request):
 
 def inicio(request):
     avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, "AppLuckApp/index.html")
+    return render(request, "AppLuckApp/index.html",{"url":Avatar.objects.filter(user=request.user.id)[0].imagen.url})
 
 
 
@@ -46,14 +46,13 @@ def postFormulario(request):
             informacion = miFormulario.cleaned_data
 
             tituloNuevo = informacion['titulo']
-            tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
-
-            if tituloChecker.exists():
-                return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Ya hay un post con el mismo título !","miFormularioBlog":miFormulario})
-            else:
-                post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=request.user.username, contenido=informacion['contenido'], fecha=informacion['fecha'], imagen=informacion['imagen']) 
-                post.save()                                                                                
-                return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Post creado!","miFormularioBlog":miFormulario})                                                                
+            #tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
+            # if tituloChecker.exists():
+            #     return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Ya hay un post con el mismo título !","miFormularioBlog":miFormulario})
+            # else:
+            post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=request.user.username, contenido=informacion['contenido'], fecha=informacion['fecha'], imagen=informacion['imagen']) 
+            post.save()                                                                                
+            return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Post creado!","miFormularioBlog":miFormulario})                                                                
     else:
         miFormulario = PostFormulario()     
                                                                                                                             
@@ -148,34 +147,6 @@ def register(request):
     return render(request, "AppLuckApp/registro.html", {"registerForm":form})
 
 
-# @login_required
-# def addAvatar(request):
-
-#     usuario = request.user
-
-#     if request.method == 'POST':
-#         myForm = addAvatarForm(request.POST,request.FILES)
-
-#         if myForm.is_valid():
-
-#             informacion = myForm.cleaned_data
-
-#             checIfUserHasAvatar = Avatar.objects.filter(user__contains = request.user)
-            
-#             if checIfUserHasAvatar is None:
-
-#                 nuevoAvatar = Avatar(user=request.user,avatar=informacion['imagen'])
-#                 nuevoAvatar.save()
-#             else:
-                
-    
-#     myForm = addAvatarForm(request.POST,request.FILES)
-
-#     return render (request, {"addAvatarForm":myForm})
-
-
-
-
 
 #-------------LOGIN-------------
 
@@ -236,6 +207,41 @@ def editarPerfil(request):
          myForm = UserEditForm(initial={'email':usuario.email,'last_name':usuario.last_name,'first_name':usuario.first_name})
     
     return render(request, "AppLuckApp/editarPerfil.html", {"miFormularioEditPerfil": myForm, "usuario":usuario})
+
+#-------------AVATAR------------
+
+@login_required
+def addAvatar(request):
+
+    if request.method == 'POST':
+
+        usuario = request.user
+        myForm = addAvatarForm(request.POST,request.FILES)
+
+        if myForm.is_valid():
+
+            informacion = myForm.cleaned_data
+
+            #check if avatar exists
+            #avatar = Avatar.objects.filter(user__contains = usuario)
+            avatar = Avatar.objects.get(user=usuario)
+
+            if avatar is None:
+
+                nuevoAvatar = Avatar(user=usuario,imagen=informacion['imagen'])
+                nuevoAvatar.save()
+                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar nuevo agregado!"})
+            else:
+                avatar.imagen = informacion['imagen']
+                avatar.save()
+                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar editado!"})
+    else:
+        myForm = addAvatarForm()
+
+    return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Puedes agregar o editar tu avatar"})
+
+
+
 
 
 def buscar(request):

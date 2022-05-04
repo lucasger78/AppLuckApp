@@ -13,6 +13,7 @@ urlpatterns = [
     path('register', views.register, name= "Register"), 
     path('logout', LogoutView.as_view(template_name='AppLuckApp/index.html'), name= "logout"),
     path('editarPerfil', views.editarPerfil, name="EditarPerfil"),
+    path('avatar',views.addAvatar,name="addAvatar"),
 
     path('about', views.about, name='About'),
     
