@@ -46,13 +46,13 @@ def postFormulario(request):
             informacion = miFormulario.cleaned_data
 
             tituloNuevo = informacion['titulo']
-            #tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
-            # if tituloChecker.exists():
-            #     return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Ya hay un post con el mismo título !","miFormularioBlog":miFormulario})
-            # else:
-            post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=request.user.username, contenido=informacion['contenido'], fecha=informacion['fecha'], imagen=informacion['imagen']) 
-            post.save()                                                                                
-            return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Post creado!","miFormularioBlog":miFormulario})                                                                
+            tituloChecker = Post.objects.filter(titulo__contains = tituloNuevo)
+            if tituloChecker.exists():
+                 return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Ya hay un post con el mismo título !","miFormularioBlog":miFormulario})
+            else:
+                post = Post(titulo=informacion['titulo'], subtitulo=informacion['subtitulo'], autor=request.user.username, contenido=informacion['contenido'], fecha=informacion['fecha'], imagen=informacion['imagen']) 
+                post.save()                                                                                
+                return render(request, "AppLuckApp/postFormulario.html", {"mensaje":"Post creado!","miFormularioBlog":miFormulario})                                                                
     else:
         miFormulario = PostFormulario()     
                                                                                                                             
