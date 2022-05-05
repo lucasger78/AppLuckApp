@@ -19,14 +19,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import *
 
-def avatar(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, {"url":avatares[0].imagen.url})
-
 def inicio(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, "AppLuckApp/index.html",{"url":Avatar.objects.filter(user=request.user.id)[0].imagen.url})
-
+    return render(request, "AppLuckApp/index.html")
 
 
 def about(request):
@@ -96,13 +90,18 @@ def editarPost(request, post_titulo):
             post.subtitulo = informacion['subtitulo']
             post.contenido = informacion['contenido']
             post.fecha = informacion['fecha']
-            post.imagen = informacion['imagen']
+
+            try:
+                post.imagen = informacion['imagen']
+            except KeyError:
+                post.imagen = post.imagen
+
 
             post.save()                                                                               
             return render(request, "AppLuckApp/editarPost.html", {"mensaje":"Post modificado!","miFormularioEditPost":miFormulario})                                                                     
     else:  
         
-        miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'contenido':post.contenido, 'fecha':post.fecha})
+        miFormulario = PostFormulario(initial={'titulo':post.titulo, 'subtitulo':post.subtitulo, 'contenido':post.contenido, 'fecha':post.fecha,'imagen':post.imagen})
         
     return render(request, "AppLuckApp/editarPost.html", {"miFormularioEditPost":miFormulario, "post":post})
 
@@ -139,6 +138,7 @@ def register(request):
             
             username = form.cleaned_data['username']
             form.save()
+
             return render(request, "AppLuckApp/registro.html", {"mensaje":"Usuario Creado! Ya puedes inciar sesión"})
     else:
         
@@ -212,6 +212,10 @@ def editarPerfil(request):
 
 @login_required
 def addAvatar(request):
+    try:
+        avatar = Avatar.objects.get(user=request.user)
+    except:
+        avatar = None
 
     if request.method == 'POST':
 
@@ -224,22 +228,23 @@ def addAvatar(request):
 
             #check if avatar exists
             #avatar = Avatar.objects.filter(user__contains = usuario)
-            avatar = Avatar.objects.get(user=usuario)
+            try:
+                avatar = Avatar.objects.get(user=request.user)
+            except:
+                avatar = None
 
             if avatar is None:
-
                 nuevoAvatar = Avatar(user=usuario,imagen=informacion['imagen'])
                 nuevoAvatar.save()
-                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar nuevo agregado!"})
+                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar nuevo agregado!","avatar":avatar})
             else:
                 avatar.imagen = informacion['imagen']
                 avatar.save()
-                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar editado!"})
+                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar editado!","avatar":avatar})
     else:
         myForm = addAvatarForm()
 
-    return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Puedes agregar o editar tu avatar"})
-
+    return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Puedes agregar o editar tu avatar","avatar":avatar})
 
 
 

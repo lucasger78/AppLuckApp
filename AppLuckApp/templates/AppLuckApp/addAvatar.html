@@ -6,8 +6,16 @@
     <form action="" method="POST" style="color:white;" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <h1>Editar Perfil</h1>
+        <h1>Avatar</h1>
         <h3>Usuario: {{usuario}}</h3>
+        <h3>Tu avatar:</h3>
+        {% if avatar %}
+
+            <img height=200px src="{{ avatar.imagen.url }}">
+        {% else%}
+            <p>No tienes foto de perfil !</p>
+        {% endif %}
+        
         <p style="color: red;">{{ mensaje }}</p>
         <table>
             {{ addAvatarForm.as_table }}
