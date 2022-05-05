@@ -38,7 +38,12 @@
                  <a class="navbar-brand" href={% url 'addAvatar' %}>Avatar</a>
                  <a class="navbar-brand" href={% url 'postFormulario' %}>Crear blog</a>
                  <a href={% url 'addAvatar' %} class="navbar-brand">Bienvenido {{user.username}} !!
-                    <img height = 40px src="{{ avatar.imagen.url }}">
+                     <!-- AVATAR -->
+                    {% if not avatar %}
+                        <img height = 40px src="/media/avatares/default.jpg">
+                    {% else %}
+                        <img height = 40px src="{{ avatar.imagen.url }}">
+                    {% endif %}
                  </a>
                  <a class="btn btn-primary" href={% url 'logout' %}>Cerrar sesión</a>                              
                  {% endif %}
@@ -56,7 +61,6 @@
                         <div class="text-center text-white">
                             {% if request.user.is_authenticated %}
                                 <h2>Bienvenido {{user.username}}!!</h2>
-                                
                                 <br><br>
                             {% endif %}
                             <!-- Page heading-->

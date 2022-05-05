@@ -179,11 +179,7 @@ def register(request):
 #-------------LOGIN-------------
 
 def login_request(request):
-    try:
-        avatar = Avatar.objects.get(user=request.user)
-    except:
-        avatar = None
-    
+
     if request.method == "POST":
         form = AuthenticationForm(request, data = request.POST)
 
@@ -196,19 +192,23 @@ def login_request(request):
             
             if user is not None:
                 login(request, user)
+                try:
+                    avatar = Avatar.objects.get(user=request.user)
+                except:
+                    avatar = None
                        
                 return render(request,"AppLuckApp/index.html",  {"mensaje":f"Bienvenido {usuario}","avatar":avatar})
             else:
                         
-                return render(request,"AppLuckApp/login.html", {"mensaje":"Error, datos incorrectos", "loginForm":form,"avatar":avatar})
+                return render(request,"AppLuckApp/login.html", {"mensaje":"Error, datos incorrectos", "loginForm":form})
 
         else:
                         
-            return render(request,"AppLuckApp/login.html" ,  {"mensaje":"Error, datos incorrectos", "loginForm":form,"avatar":avatar})
+            return render(request,"AppLuckApp/login.html" ,  {"mensaje":"Error, datos incorrectos", "loginForm":form})
 
     form = AuthenticationForm()
 
-    return render(request,"AppLuckApp/login.html", {'loginForm':form,"avatar":avatar} )
+    return render(request,"AppLuckApp/login.html", {'loginForm':form} )
 
 
 
@@ -272,7 +272,11 @@ def addAvatar(request):
             if avatar is None:
                 nuevoAvatar = Avatar(user=usuario,imagen=informacion['imagen'])
                 nuevoAvatar.save()
-                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar nuevo agregado! Actualiza la página para ver los cambios","avatar":avatar})
+                try:
+                    avatar = Avatar.objects.get(user=request.user)
+                except:
+                    avatar = None
+                return render (request,"AppLuckApp/addAvatar.html", {"addAvatarForm":myForm, "mensaje":"Avatar nuevo agregado!","avatar":avatar})
             else:
                 avatar.imagen = informacion['imagen']
                 avatar.save()

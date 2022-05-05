@@ -17,6 +17,8 @@
         <button class="col-auto btn btn-primary btn-sg" type="submit"> Registrarme</button>
         
     </form> 
-    <button class=" col-auto btn btn-primary btn-sg"><a href = "{% url 'Inicio' %}" style="color:white; text-decoration: none;">Volver al inicio</a></button>
+
+    <a class=" btn btn-primary" href = "{% url 'Inicio' %}">Volver al inicio</a>
+    <a class = "btn btn-primary" href={% url 'Login' %}>INICIAR SESIÓN</a>
 
 {% endblock %}
