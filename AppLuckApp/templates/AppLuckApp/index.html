@@ -30,7 +30,10 @@
 
 
                  {% if not request.user.is_authenticated %}
-                 <a class="btn btn-primary" href={% url 'Login' %}>INICIAR SESIÓN</a>
+                 <p>
+                    <a style="background-color:green; border-color: green;" class="btn btn-primary" href={% url 'Register' %}>¿Nuevo? Regístrate!</a>
+                    <a class="btn btn-primary" href={% url 'Login' %}>INICIAR SESIÓN</a>
+                 </p>
                  {% endif %}
 
                  {% if request.user.is_authenticated %}
