@@ -44,5 +44,5 @@ Te permite editar la foto de perfil del usuario.
 | Integrante  | Tarea |
 |------------ |-------------|
 | Liliana Fu Ye |Estructuración de los formularios y elementos visuales como botones funcionales y barra de navegación, creación de blogs, manejo de imágenes en blogs y función para registrar y mostrar foto de perfil de usuario.|
-| Lucas Germán Conti | Creación de la base del blog armado de la fase inicial del Crud edición y armado de los modelos armado del buscador corrección de editar perfil y armado de comentarios creacion de registro, login y logout. |
+| Lucas Germán Conti | Creación de la base del blog, armado de la fase inicial del Crud, edición y armado de los modelos, armado del buscador, corrección de editar perfil y creacion de registro, login y logout. |
 | Lucas Puebla | Redacción, edición e implementación de página About us y su contenido.	      Estructuración, edición e implementación de página readme y su contenido.|
