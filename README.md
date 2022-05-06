@@ -21,7 +21,7 @@ Ruta para cerrar sesión.
 
 Te permite ver tus datos de perfil.
 
-# editarPerfil
+## editarPerfil
 
 Te permite editar tus datos.
 
