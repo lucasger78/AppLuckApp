@@ -37,7 +37,7 @@ Te permite ver los blogs creados (si el usuario está logeado puede editar y eli
 
 Te permite editar la foto de perfil del usuario.
 
-## Bienvenido usuario
+## Bienvenidousuario
 Te permite editar la foto de perfil del usuario.
 
 # Tareas
