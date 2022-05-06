@@ -3,7 +3,7 @@
 # Link a [Video de presentación ](https://www.youtube.com/watch?v=6DRkf3kZMXw&list=PLLmIerZMk4Yto5VZpnvC5UygZgqnZxsaB&index=4)
 
 ## Inicio
-#Se muestra el principio de la web y la bienvenida si el usuario está logeado
+Se muestra el principio de la web y la bienvenida si el usuario está logeado
 
 ## About
 
